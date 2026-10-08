@@ -2,7 +2,7 @@ namespace Sandbox;
 
 public static class TextTools
 {
-    /// <summary>Counts words separated by spaces.</summary>
+    /// <summary>Counts words separated by spaces. Returns 0 if <paramref name="text"/> is null or empty.</summary>
     public static int WordCount(string text)
     {
         if (string.IsNullOrEmpty(text))

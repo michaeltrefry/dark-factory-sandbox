@@ -10,5 +10,8 @@ public class TextToolsTests
         Assert.Equal(expected, TextTools.WordCount(text));
 
     [Fact]
+    public void WordCount_returns_zero_for_null() => Assert.Equal(0, TextTools.WordCount(null!));
+
+    [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 }
