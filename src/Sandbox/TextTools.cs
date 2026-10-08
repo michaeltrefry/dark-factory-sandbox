@@ -9,9 +9,8 @@ public static class TextTools
         {
             return 0;
         }
-        // Known defect, kept as a target for factory bug stories: runs of spaces,
-        // leading/trailing spaces and tabs/newlines are miscounted.
-        return text.Split(' ').Length;
+        // Known defect, kept as a target for factory bug stories: tabs/newlines are miscounted.
+        return text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
     }
 
     /// <summary>Reverses the characters of <paramref name="text"/>.</summary>

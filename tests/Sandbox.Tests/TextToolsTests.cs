@@ -6,6 +6,8 @@ public class TextToolsTests
     [InlineData("", 0)]
     [InlineData("hello", 1)]
     [InlineData("hello world", 2)]
+    [InlineData(" hello world ", 2)]
+    [InlineData("  hi", 1)]
     public void WordCount_counts_single_spaced_words(string text, int expected) =>
         Assert.Equal(expected, TextTools.WordCount(text));
 
