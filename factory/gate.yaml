@@ -1,0 +1,6 @@
+# Dark Factory merge gate policy, read by the gate from the PR's base branch on every evaluation.
+# The only accepted form: both rules, these values. Anything else blocks every merge.
+version: 1
+require:
+  ci: green
+  review: pass
