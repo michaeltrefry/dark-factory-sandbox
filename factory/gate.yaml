@@ -1,6 +1,7 @@
 # Dark Factory merge gate policy (version 2, sc-25381), read by the gate from the PR's base branch on every evaluation.
 # Every path a PR's diff touches (both sides of a rename, deleted files too) is in the first of sealed, protected, free
-# whose patterns match it, else normal. Patterns are anchored at the repository root and case-sensitive; '*' matches
+# whose patterns match it, else normal. Patterns are anchored at the repository root; sealed and protected patterns match
+# case-insensitively (so a path's case can only move it to a stricter tier), free patterns case-sensitively. '*' matches
 # within a path segment, '**' any number of segments, and a trailing '/' everything under that directory.
 # The change needs the checks of every tier it touches. Anything invalid or missing blocks every merge.
 version: 2
