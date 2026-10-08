@@ -11,4 +11,14 @@ public class TextToolsTests
 
     [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("a")]
+    public void Reverse_returns_short_strings_unchanged(string text)
+    {
+        var result = TextTools.Reverse(text);
+        Assert.Equal(text, result);
+        Assert.Same(text, result);
+    }
 }

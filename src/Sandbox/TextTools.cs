@@ -17,6 +17,11 @@ public static class TextTools
     /// <summary>Reverses the characters of <paramref name="text"/>.</summary>
     public static string Reverse(string text)
     {
+        if (text.Length < 2)
+        {
+            return text;
+        }
+
         var chars = text.ToCharArray();
         Array.Reverse(chars);
         return new string(chars);
