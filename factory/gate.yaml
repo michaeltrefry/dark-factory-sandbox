@@ -13,10 +13,10 @@ tiers:
   # Built and reviewed (with the security review), then escalated instead of merged.
   protected:
     paths: ["**/auth/", "**/migrations/", infra/, "**/secrets/", "**/payments/"]
-    checks: [ci-green, review-pass, security-review, risk-threshold]
-  # Every other path.
+    checks: [ci-green, review-pass, security-review, risk-threshold, new-tests-fail-on-base]
+  # Every other path. new-tests-fail-on-base (sc-25382): the PR must add a test that fails on the base and passes on the head.
   normal:
-    checks: [ci-green, review-pass, risk-threshold]
+    checks: [ci-green, review-pass, risk-threshold, new-tests-fail-on-base]
   free:
     paths: [docs/, tests/]
     checks: [ci-green, review-pass]
