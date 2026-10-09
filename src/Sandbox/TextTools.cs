@@ -76,4 +76,23 @@ public static class TextTools
 
         return text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
     }
+
+    /// <summary>
+    /// Upper-cases (invariant culture) the first character of every space-separated
+    /// word, leaving all other characters unchanged.
+    /// </summary>
+    public static string Capitalize(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        var chars = text.ToCharArray();
+        for (var i = 0; i < chars.Length; i++)
+        {
+            if (chars[i] != ' ' && (i == 0 || chars[i - 1] == ' '))
+            {
+                chars[i] = char.ToUpperInvariant(chars[i]);
+            }
+        }
+        return new string(chars);
+    }
 }

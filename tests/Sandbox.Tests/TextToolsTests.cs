@@ -79,4 +79,20 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.StartsWithIgnoreCase("a", null!));
         Assert.Equal("prefix", ex.ParamName);
     }
+
+    [Theory]
+    [InlineData("", "")]
+    [InlineData("hello wORLD", "Hello WORLD")]
+    [InlineData("  a  b ", "  A  B ")]
+    [InlineData("x", "X")]
+    [InlineData("1st place", "1st Place")]
+    public void Capitalize_upper_cases_first_letter_of_each_word(string text, string expected) =>
+        Assert.Equal(expected, TextTools.Capitalize(text));
+
+    [Fact]
+    public void Capitalize_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Capitalize(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
 }
