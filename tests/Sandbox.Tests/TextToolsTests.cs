@@ -9,6 +9,14 @@ public class TextToolsTests
     public void WordCount_counts_single_spaced_words(string text, int expected) =>
         Assert.Equal(expected, TextTools.WordCount(text));
 
+    [Theory]
+    [InlineData(" ", 0)]
+    [InlineData("  ", 0)]
+    [InlineData("\t\n", 0)]
+    [InlineData("  hello   world ", 2)]
+    public void WordCount_ignores_runs_of_whitespace(string text, int expected) =>
+        Assert.Equal(expected, TextTools.WordCount(text));
+
     [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
