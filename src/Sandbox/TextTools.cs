@@ -21,4 +21,12 @@ public static class TextTools
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    /// <summary>Concatenates <paramref name="text"/> <paramref name="count"/> times.</summary>
+    public static string Repeat(string text, int count)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
+        return string.Concat(Enumerable.Repeat(text, count));
+    }
 }
