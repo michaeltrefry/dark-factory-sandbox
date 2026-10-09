@@ -31,4 +31,19 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.CountLines(null!));
         Assert.Equal("text", ex.ParamName);
     }
+
+    [Theory]
+    [InlineData("banana", 'a', 3)]
+    [InlineData("", 'x', 0)]
+    [InlineData("abc", 'x', 0)]
+    [InlineData("Aa", 'a', 1)]
+    public void CountChar_counts_ordinal_occurrences(string text, char c, int expected) =>
+        Assert.Equal(expected, TextTools.CountChar(text, c));
+
+    [Fact]
+    public void CountChar_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.CountChar(null!, 'a'));
+        Assert.Equal("text", ex.ParamName);
+    }
 }

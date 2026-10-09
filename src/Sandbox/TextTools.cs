@@ -48,4 +48,20 @@ public static class TextTools
         }
         return lines;
     }
+
+    /// <summary>Counts ordinal occurrences of <paramref name="c"/> in <paramref name="text"/>.</summary>
+    public static int CountChar(string text, char c)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        var count = 0;
+        foreach (var ch in text)
+        {
+            if (ch == c)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
 }
