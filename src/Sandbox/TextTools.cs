@@ -76,4 +76,16 @@ public static class TextTools
 
         return text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
     }
+
+    /// <summary>
+    /// Whether <paramref name="text"/> ends with <paramref name="suffix"/> under
+    /// ordinal case-insensitive comparison.
+    /// </summary>
+    public static bool EndsWithIgnoreCase(string text, string suffix)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(suffix);
+
+        return text.EndsWith(suffix, StringComparison.OrdinalIgnoreCase);
+    }
 }

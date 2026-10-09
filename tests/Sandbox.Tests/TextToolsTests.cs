@@ -71,4 +71,29 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.StartsWithIgnoreCase("a", null!));
         Assert.Equal("prefix", ex.ParamName);
     }
+
+    [Theory]
+    [InlineData("Hello", "LO", true)]
+    [InlineData("Hello", "hello", true)]
+    [InlineData("lo", "hello", false)]
+    [InlineData("Hello", "", true)]
+    [InlineData("", "", true)]
+    [InlineData("", "a", false)]
+    [InlineData("abc", "ab", false)]
+    public void EndsWithIgnoreCase_compares_ordinal_ignoring_case(string text, string suffix, bool expected) =>
+        Assert.Equal(expected, TextTools.EndsWithIgnoreCase(text, suffix));
+
+    [Fact]
+    public void EndsWithIgnoreCase_throws_on_null_text()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.EndsWithIgnoreCase(null!, "a"));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void EndsWithIgnoreCase_throws_on_null_suffix()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.EndsWithIgnoreCase("a", null!));
+        Assert.Equal("suffix", ex.ParamName);
+    }
 }
