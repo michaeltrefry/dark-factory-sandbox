@@ -71,4 +71,21 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.StartsWithIgnoreCase("a", null!));
         Assert.Equal("prefix", ex.ParamName);
     }
+
+    [Theory]
+    [InlineData("0123", true)]
+    [InlineData("7", true)]
+    [InlineData("12a", false)]
+    [InlineData("", false)]
+    [InlineData(" 1", false)]
+    [InlineData("١٢", false)]
+    public void IsAllDigits_checks_ascii_digits(string text, bool expected) =>
+        Assert.Equal(expected, TextTools.IsAllDigits(text));
+
+    [Fact]
+    public void IsAllDigits_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.IsAllDigits(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
 }

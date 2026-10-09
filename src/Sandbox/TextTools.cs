@@ -76,4 +76,25 @@ public static class TextTools
 
         return text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
     }
+
+    /// <summary>
+    /// Whether <paramref name="text"/> is non-empty and consists only of ASCII digits 0-9.
+    /// </summary>
+    public static bool IsAllDigits(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        if (text.Length == 0)
+        {
+            return false;
+        }
+        foreach (var ch in text)
+        {
+            if (!char.IsAsciiDigit(ch))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
