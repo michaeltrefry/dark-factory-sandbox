@@ -21,4 +21,12 @@ public static class TextTools
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    /// <summary>Upper-cased first letter of each space-separated part of <paramref name="name"/>.</summary>
+    public static string Initials(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return string.Concat(parts.Select(p => char.ToUpperInvariant(p[0])));
+    }
 }
