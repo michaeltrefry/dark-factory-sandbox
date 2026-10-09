@@ -19,6 +19,15 @@ public static class TextTools
     {
         var chars = text.ToCharArray();
         Array.Reverse(chars);
+        // Reversing splits surrogate pairs into low-then-high; swap them back.
+        for (var i = 0; i < chars.Length - 1; i++)
+        {
+            if (char.IsLowSurrogate(chars[i]) && char.IsHighSurrogate(chars[i + 1]))
+            {
+                (chars[i], chars[i + 1]) = (chars[i + 1], chars[i]);
+                i++;
+            }
+        }
         return new string(chars);
     }
 }
