@@ -2,16 +2,16 @@ namespace Sandbox;
 
 public static class TextTools
 {
-    /// <summary>Counts words separated by spaces.</summary>
+    /// <summary>
+    /// Counts words separated by runs of whitespace; whitespace-only text has no words.
+    /// </summary>
     public static int WordCount(string text)
     {
         if (string.IsNullOrEmpty(text))
         {
             return 0;
         }
-        // Known defect, kept as a target for factory bug stories: runs of spaces,
-        // leading/trailing spaces and tabs/newlines are miscounted.
-        return text.Split(' ').Length;
+        return text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
     }
 
     /// <summary>Reverses the characters of <paramref name="text"/>.</summary>
