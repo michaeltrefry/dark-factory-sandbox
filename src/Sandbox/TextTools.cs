@@ -21,4 +21,30 @@ public static class TextTools
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    /// <summary>
+    /// Shortens <paramref name="text"/> to at most <paramref name="maxLength"/> characters,
+    /// including a trailing <c>"..."</c>. Cuts at the last space before the limit when there
+    /// is one (dropping the space), otherwise mid-word. Text that already fits is returned unchanged.
+    /// </summary>
+    /// <exception cref="ArgumentNullException"><paramref name="text"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException"><paramref name="maxLength"/> is less than 3.</exception>
+    public static string Truncate(string text, int maxLength)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentOutOfRangeException.ThrowIfLessThan(maxLength, 3);
+        if (text.Length <= maxLength)
+        {
+            return text;
+        }
+
+        var budget = maxLength - 3;
+        var cut = text.LastIndexOf(' ', budget);
+        var head = cut > 0 ? text[..cut].TrimEnd(' ') : "";
+        if (head.Length == 0)
+        {
+            head = text[..budget];
+        }
+        return head + "...";
+    }
 }
