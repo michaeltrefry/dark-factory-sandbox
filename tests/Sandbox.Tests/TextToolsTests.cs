@@ -103,6 +103,7 @@ public class TextToolsTests
     [InlineData("parseHTTPRequest", "parse_http_request")]
     [InlineData("already_snake", "already_snake")]
     [InlineData("HTTP", "http")]
+    [InlineData("XMLHttpRequest", "xml_http_request")]
     [InlineData("Already_Snake", "already_snake")]
     [InlineData("version2Update", "version2_update")]
     [InlineData("getHTTP2Response", "get_http2_response")]
