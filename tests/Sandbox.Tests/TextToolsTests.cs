@@ -95,4 +95,22 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Capitalize(null!));
         Assert.Equal("text", ex.ParamName);
     }
+
+    [Theory]
+    [InlineData("", "")]
+    [InlineData("HelloWorld", "hello_world")]
+    [InlineData("helloWorld", "hello_world")]
+    [InlineData("parseHTTPRequest", "parse_http_request")]
+    [InlineData("already_snake", "already_snake")]
+    [InlineData("HTTP", "http")]
+    [InlineData("Already_Snake", "already_snake")]
+    public void ToSnakeCase_converts_identifiers(string text, string expected) =>
+        Assert.Equal(expected, TextTools.ToSnakeCase(text));
+
+    [Fact]
+    public void ToSnakeCase_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.ToSnakeCase(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
 }
