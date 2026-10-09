@@ -46,4 +46,29 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.CountChar(null!, 'a'));
         Assert.Equal("text", ex.ParamName);
     }
+
+    [Theory]
+    [InlineData("Hello", "he", true)]
+    [InlineData("Hello", "HELLO", true)]
+    [InlineData("Hi", "hello", false)]
+    [InlineData("Hello", "", true)]
+    [InlineData("", "", true)]
+    [InlineData("", "a", false)]
+    [InlineData("abc", "bc", false)]
+    public void StartsWithIgnoreCase_compares_ordinal_ignoring_case(string text, string prefix, bool expected) =>
+        Assert.Equal(expected, TextTools.StartsWithIgnoreCase(text, prefix));
+
+    [Fact]
+    public void StartsWithIgnoreCase_throws_on_null_text()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.StartsWithIgnoreCase(null!, "a"));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void StartsWithIgnoreCase_throws_on_null_prefix()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.StartsWithIgnoreCase("a", null!));
+        Assert.Equal("prefix", ex.ParamName);
+    }
 }

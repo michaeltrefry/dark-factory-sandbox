@@ -64,4 +64,16 @@ public static class TextTools
         }
         return count;
     }
+
+    /// <summary>
+    /// Whether <paramref name="text"/> starts with <paramref name="prefix"/> under
+    /// ordinal case-insensitive comparison.
+    /// </summary>
+    public static bool StartsWithIgnoreCase(string text, string prefix)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(prefix);
+
+        return text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
+    }
 }
