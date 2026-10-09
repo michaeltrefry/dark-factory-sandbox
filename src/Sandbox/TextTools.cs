@@ -21,4 +21,19 @@ public static class TextTools
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    /// <summary>Counts the ASCII vowels a, e, i, o, u in <paramref name="text"/>, case-insensitive.</summary>
+    public static int CountVowels(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        var count = 0;
+        foreach (var c in text)
+        {
+            if ("aeiouAEIOU".Contains(c))
+            {
+                count++;
+            }
+        }
+        return count;
+    }
 }
