@@ -1,0 +1,27 @@
+# Dark Factory merge gate policy (version 2, sc-25381), read by the gate from the PR's base branch on every evaluation.
+# Every path a PR's diff touches (both sides of a rename, deleted files too) is in the first of sealed, protected, free
+# whose patterns match it, else normal. Patterns are anchored at the repository root; sealed and protected patterns match
+# case-insensitively (so a path's case can only move it to a stricter tier), free patterns case-sensitively. '*' matches
+# within a path segment, '**' any number of segments, and a trailing '/' everything under that directory.
+# The change needs the checks of every tier it touches. Anything invalid or missing blocks every merge.
+version: 2
+tiers:
+  # Always escalates: the gate's own policy, CI workflows, CODEOWNERS and the factory's prompts.
+  sealed:
+    paths: [factory/gate.yaml, .github/workflows/, CODEOWNERS, .github/CODEOWNERS, docs/CODEOWNERS, factory/prompts/]
+    checks: [ci-green, review-pass, security-review]
+  # Built and reviewed (with the security review), then escalated instead of merged.
+  protected:
+    paths: ["**/auth/", "**/migrations/", infra/, "**/secrets/", "**/payments/"]
+    checks: [ci-green, review-pass, security-review, risk-threshold, new-tests-fail-on-base]
+  # Every other path. new-tests-fail-on-base (sc-25382): the PR must add a test that fails on the base and passes on the head.
+  normal:
+    checks: [ci-green, review-pass, risk-threshold, new-tests-fail-on-base]
+  free:
+    paths: [docs/, tests/]
+    checks: [ci-green, review-pass]
+# A change over any limit (in a tier that lists risk-threshold) escalates instead of merging.
+risk:
+  max_changed_lines: 600
+  max_changed_files: 25
+  max_fix_rounds: 2
