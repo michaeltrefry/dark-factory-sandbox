@@ -21,4 +21,26 @@ public static class TextTools
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    /// <summary>
+    /// Returns true when the letters and digits of <paramref name="text"/>, compared
+    /// case-insensitively, read the same backwards; all other characters are ignored.
+    /// </summary>
+    public static bool IsPalindrome(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        int i = 0, j = text.Length - 1;
+        while (i < j)
+        {
+            if (!char.IsLetterOrDigit(text[i])) { i++; continue; }
+            if (!char.IsLetterOrDigit(text[j])) { j--; continue; }
+            if (char.ToUpperInvariant(text[i]) != char.ToUpperInvariant(text[j]))
+            {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
 }
