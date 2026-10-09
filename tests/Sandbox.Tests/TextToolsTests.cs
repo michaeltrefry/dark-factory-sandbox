@@ -80,6 +80,9 @@ public class TextToolsTests
     [InlineData("HTTPServer", "http-server")]
     [InlineData("already-kebab", "already-kebab")]
     [InlineData("Hello", "hello")]
+    [InlineData("HTTP", "http")]
+    [InlineData("version2Update", "version2-update")]
+    [InlineData("already-Kebab", "already-kebab")]
     public void ToKebabCase_converts_identifiers(string text, string expected) =>
         Assert.Equal(expected, TextTools.ToKebabCase(text));
 
