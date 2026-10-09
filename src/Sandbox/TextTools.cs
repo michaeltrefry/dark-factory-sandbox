@@ -76,4 +76,30 @@ public static class TextTools
 
         return text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
     }
+
+    /// <summary>
+    /// Converts a PascalCase or camelCase identifier to lower kebab-case; an acronym
+    /// run stays one word (<c>"parseHTTPRequest"</c> becomes <c>"parse-http-request"</c>).
+    /// </summary>
+    public static string ToKebabCase(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        var sb = new System.Text.StringBuilder(text.Length + 4);
+        for (var i = 0; i < text.Length; i++)
+        {
+            var ch = text[i];
+            if (char.IsUpper(ch) && i > 0)
+            {
+                var prev = text[i - 1];
+                var nextIsLower = i + 1 < text.Length && char.IsLower(text[i + 1]);
+                if (char.IsLower(prev) || char.IsDigit(prev) || (char.IsUpper(prev) && nextIsLower))
+                {
+                    sb.Append('-');
+                }
+            }
+            sb.Append(char.ToLowerInvariant(ch));
+        }
+        return sb.ToString();
+    }
 }

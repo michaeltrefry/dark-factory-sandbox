@@ -71,4 +71,22 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.StartsWithIgnoreCase("a", null!));
         Assert.Equal("prefix", ex.ParamName);
     }
+
+    [Theory]
+    [InlineData("", "")]
+    [InlineData("HelloWorld", "hello-world")]
+    [InlineData("helloWorld", "hello-world")]
+    [InlineData("parseHTTPRequest", "parse-http-request")]
+    [InlineData("HTTPServer", "http-server")]
+    [InlineData("already-kebab", "already-kebab")]
+    [InlineData("Hello", "hello")]
+    public void ToKebabCase_converts_identifiers(string text, string expected) =>
+        Assert.Equal(expected, TextTools.ToKebabCase(text));
+
+    [Fact]
+    public void ToKebabCase_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.ToKebabCase(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
 }
