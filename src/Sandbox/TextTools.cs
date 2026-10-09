@@ -76,4 +76,21 @@ public static class TextTools
 
         return text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
     }
+
+    /// <summary>Collapses every run of two or more spaces into a single space.</summary>
+    public static string Squeeze(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        var sb = new System.Text.StringBuilder(text.Length);
+        for (var i = 0; i < text.Length; i++)
+        {
+            if (text[i] == ' ' && i > 0 && text[i - 1] == ' ')
+            {
+                continue;
+            }
+            sb.Append(text[i]);
+        }
+        return sb.ToString();
+    }
 }

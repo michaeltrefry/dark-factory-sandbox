@@ -71,4 +71,23 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.StartsWithIgnoreCase("a", null!));
         Assert.Equal("prefix", ex.ParamName);
     }
+
+    [Theory]
+    [InlineData("", "")]
+    [InlineData("abc", "abc")]
+    [InlineData("a b", "a b")]
+    [InlineData("a   b  c", "a b c")]
+    [InlineData("  a", " a")]
+    [InlineData("a   ", "a ")]
+    [InlineData("   ", " ")]
+    [InlineData("a\t\tb", "a\t\tb")]
+    public void Squeeze_collapses_runs_of_spaces(string text, string expected) =>
+        Assert.Equal(expected, TextTools.Squeeze(text));
+
+    [Fact]
+    public void Squeeze_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Squeeze(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
 }
