@@ -11,4 +11,24 @@ public class TextToolsTests
 
     [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
+
+    [Theory]
+    [InlineData("", 0)]
+    [InlineData("a", 1)]
+    [InlineData("a\nb", 2)]
+    [InlineData("a\r\nb\r\n", 2)]
+    [InlineData("a\rb", 2)]
+    [InlineData("a\n", 1)]
+    [InlineData("\n", 1)]
+    [InlineData("\n\n", 2)]
+    [InlineData("a\r\n\rb", 3)]
+    public void CountLines_counts_lines(string text, int expected) =>
+        Assert.Equal(expected, TextTools.CountLines(text));
+
+    [Fact]
+    public void CountLines_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.CountLines(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
 }

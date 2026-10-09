@@ -21,4 +21,31 @@ public static class TextTools
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    /// <summary>
+    /// Counts lines ended by "\n", "\r\n" or a lone "\r"; a trailing terminator
+    /// does not start an extra empty line.
+    /// </summary>
+    public static int CountLines(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        var lines = 0;
+        for (var i = 0; i < text.Length; i++)
+        {
+            if (text[i] == '\r' && i + 1 < text.Length && text[i + 1] == '\n')
+            {
+                i++;
+            }
+            if (text[i] == '\r' || text[i] == '\n')
+            {
+                lines++;
+            }
+        }
+        if (text.Length > 0 && text[^1] != '\n' && text[^1] != '\r')
+        {
+            lines++;
+        }
+        return lines;
+    }
 }
