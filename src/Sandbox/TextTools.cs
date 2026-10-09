@@ -21,4 +21,26 @@ public static class TextTools
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    /// <summary>Converts a PascalCase/camelCase identifier to lower snake_case.</summary>
+    public static string ToSnakeCase(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        var sb = new System.Text.StringBuilder(text.Length + 4);
+        for (var i = 0; i < text.Length; i++)
+        {
+            var c = text[i];
+            if (char.IsUpper(c) && i > 0 && text[i - 1] != '_')
+            {
+                var prev = text[i - 1];
+                var nextIsLower = i + 1 < text.Length && char.IsLower(text[i + 1]);
+                if (char.IsLower(prev) || char.IsDigit(prev) || (char.IsUpper(prev) && nextIsLower))
+                {
+                    sb.Append('_');
+                }
+            }
+            sb.Append(char.ToLowerInvariant(c));
+        }
+        return sb.ToString();
+    }
 }
