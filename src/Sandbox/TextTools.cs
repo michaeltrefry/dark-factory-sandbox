@@ -21,4 +21,19 @@ public static class TextTools
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    /// <summary>Upper-cases the first letter of every space-separated word.</summary>
+    public static string Capitalize(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        var chars = text.ToCharArray();
+        for (var i = 0; i < chars.Length; i++)
+        {
+            if (i == 0 || chars[i - 1] == ' ')
+            {
+                chars[i] = char.ToUpperInvariant(chars[i]);
+            }
+        }
+        return new string(chars);
+    }
 }
