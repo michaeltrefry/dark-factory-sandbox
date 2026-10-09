@@ -11,4 +11,11 @@ public class TextToolsTests
 
     [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
+
+    [Fact]
+    public void Reverse_null_throws_ArgumentNullException()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Reverse(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
 }
