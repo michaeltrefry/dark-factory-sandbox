@@ -18,6 +18,8 @@ public class TextToolsTests
     [InlineData("helloWorld", "hello_world")]
     [InlineData("parseHTTPRequest", "parse_http_request")]
     [InlineData("already_snake", "already_snake")]
+    [InlineData("XMLParser", "xml_parser")]
+    [InlineData("getID", "get_id")]
     public void ToSnakeCase_converts_identifiers(string text, string expected) =>
         Assert.Equal(expected, TextTools.ToSnakeCase(text));
 
