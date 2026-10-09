@@ -83,6 +83,7 @@ public class TextToolsTests
     [InlineData("HTTP", "http")]
     [InlineData("version2Update", "version2-update")]
     [InlineData("already-Kebab", "already-kebab")]
+    [InlineData("getID", "get-id")]
     public void ToKebabCase_converts_identifiers(string text, string expected) =>
         Assert.Equal(expected, TextTools.ToKebabCase(text));
 
