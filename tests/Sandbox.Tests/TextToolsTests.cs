@@ -104,6 +104,8 @@ public class TextToolsTests
     [InlineData("already_snake", "already_snake")]
     [InlineData("HTTP", "http")]
     [InlineData("Already_Snake", "already_snake")]
+    [InlineData("version2Update", "version2_update")]
+    [InlineData("getHTTP2Response", "get_http2_response")]
     public void ToSnakeCase_converts_identifiers(string text, string expected) =>
         Assert.Equal(expected, TextTools.ToSnakeCase(text));
 
