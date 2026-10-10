@@ -20,6 +20,15 @@ public class TextToolsTests
     [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
+    [Theory]
+    [InlineData("a\U0001F600b", "b\U0001F600a")]
+    [InlineData("\U0001F600\U0001F601", "\U0001F601\U0001F600")]
+    [InlineData("a\U0001F600", "\U0001F600a")]
+    [InlineData("\U0001F600b", "b\U0001F600")]
+    [InlineData("ab", "ba")]
+    public void Reverse_keeps_surrogate_pairs_together(string text, string expected) =>
+        Assert.Equal(expected, TextTools.Reverse(text));
+
     [Fact]
     public void Reverse_throws_on_null()
     {
