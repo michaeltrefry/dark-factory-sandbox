@@ -108,6 +108,15 @@ public class TextToolsTests
     public void Capitalize_upper_cases_first_letter_of_each_word(string text, string expected) =>
         Assert.Equal(expected, TextTools.Capitalize(text));
 
+    [Theory]
+    [InlineData("hello\tworld", "Hello\tWorld")]
+    [InlineData("hello\nworld", "Hello\nWorld")]
+    [InlineData("hello\tworld\nagain", "Hello\tWorld\nAgain")]
+    [InlineData("hello\r\nworld", "Hello\r\nWorld")]
+    [InlineData("\thello", "\tHello")]
+    public void Capitalize_treats_all_whitespace_as_word_separators(string text, string expected) =>
+        Assert.Equal(expected, TextTools.Capitalize(text));
+
     [Fact]
     public void Capitalize_throws_on_null()
     {

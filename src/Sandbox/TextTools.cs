@@ -89,7 +89,7 @@ public static class TextTools
     }
 
     /// <summary>
-    /// Upper-cases (invariant culture) the first character of every space-separated
+    /// Upper-cases (invariant culture) the first character of every whitespace-separated
     /// word, leaving all other characters unchanged.
     /// </summary>
     public static string Capitalize(string text)
@@ -99,7 +99,7 @@ public static class TextTools
         var chars = text.ToCharArray();
         for (var i = 0; i < chars.Length; i++)
         {
-            if (chars[i] != ' ' && (i == 0 || chars[i - 1] == ' '))
+            if (!char.IsWhiteSpace(chars[i]) && (i == 0 || char.IsWhiteSpace(chars[i - 1])))
             {
                 chars[i] = char.ToUpperInvariant(chars[i]);
             }
