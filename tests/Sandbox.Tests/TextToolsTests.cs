@@ -21,6 +21,18 @@ public class TextToolsTests
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
     [Fact]
+    public void Reverse_keeps_surrogate_pairs_together() =>
+        Assert.Equal("b\U0001F600a", TextTools.Reverse("a\U0001F600b"));
+
+    [Fact]
+    public void Reverse_keeps_adjacent_surrogate_pairs_together() =>
+        Assert.Equal("\U0001F601\U0001F600yx", TextTools.Reverse("xy\U0001F600\U0001F601"));
+
+    [Fact]
+    public void Reverse_reverses_only_surrogate_pair_text() =>
+        Assert.Equal("\U0001F600", TextTools.Reverse("\U0001F600"));
+
+    [Fact]
     public void Reverse_throws_on_null()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Reverse(null!));
