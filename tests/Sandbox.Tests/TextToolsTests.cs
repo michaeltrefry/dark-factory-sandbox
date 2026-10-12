@@ -81,6 +81,14 @@ public class TextToolsTests
         Assert.Equal(expected, TextTools.CountLines(text));
 
     [Fact]
+    public void CountLines_ends_line_at_line_separator() =>
+        Assert.Equal(2, TextTools.CountLines("a" + (char)0x2028 + "b"));
+
+    [Fact]
+    public void CountLines_ends_line_at_paragraph_separator_without_extra_trailing_line() =>
+        Assert.Equal(2, TextTools.CountLines("a" + (char)0x2029 + "b" + (char)0x2029));
+
+    [Fact]
     public void CountLines_throws_on_null()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.CountLines(null!));
