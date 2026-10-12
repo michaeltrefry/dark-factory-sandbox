@@ -35,8 +35,8 @@ public static class TextTools
     }
 
     /// <summary>
-    /// Counts lines ended by "\n", "\r\n" or a lone "\r"; a trailing terminator
-    /// does not start an extra empty line.
+    /// Counts lines ended by "\n", "\r\n", a lone "\r", LINE SEPARATOR (U+2028) or
+    /// PARAGRAPH SEPARATOR (U+2029); a trailing terminator does not start an extra empty line.
     /// </summary>
     public static int CountLines(string text)
     {
@@ -49,17 +49,20 @@ public static class TextTools
             {
                 i++;
             }
-            if (text[i] == '\r' || text[i] == '\n')
+            if (IsLineTerminator(text[i]))
             {
                 lines++;
             }
         }
-        if (text.Length > 0 && text[^1] != '\n' && text[^1] != '\r')
+        if (text.Length > 0 && !IsLineTerminator(text[^1]))
         {
             lines++;
         }
         return lines;
     }
+
+    private static bool IsLineTerminator(char c) =>
+        c is '\r' or '\n' or (char)0x2028 or (char)0x2029;
 
     /// <summary>Counts ordinal occurrences of <paramref name="c"/> in <paramref name="text"/>.</summary>
     public static int CountChar(string text, char c)
