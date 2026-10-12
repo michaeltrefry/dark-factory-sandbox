@@ -18,6 +18,14 @@ public class TextToolsTests
         Assert.Equal(expected, TextTools.WordCount(text));
 
     [Fact]
+    public void WordCount_splits_on_zero_width_space() =>
+        Assert.Equal(3, TextTools.WordCount("one​two three"));
+
+    [Fact]
+    public void WordCount_zero_width_space_only_has_no_words() =>
+        Assert.Equal(0, TextTools.WordCount("​"));
+
+    [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
     [Fact]
