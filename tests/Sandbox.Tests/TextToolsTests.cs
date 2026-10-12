@@ -146,6 +146,14 @@ public class TextToolsTests
         Assert.Equal(expected, TextTools.Capitalize(text));
 
     [Fact]
+    public void Capitalize_starts_a_word_after_zero_width_space() =>
+        Assert.Equal("One​Two", TextTools.Capitalize("one​two"));
+
+    [Fact]
+    public void Capitalize_starts_a_word_after_leading_zero_width_space() =>
+        Assert.Equal("​X", TextTools.Capitalize("​x"));
+
+    [Fact]
     public void Capitalize_upper_cases_supplementary_plane_first_letter() =>
         Assert.Equal("\U00010400bc D", TextTools.Capitalize("\U00010428bc d"));
 
