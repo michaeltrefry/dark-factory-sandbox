@@ -12,3 +12,4 @@ public sealed class TextSubmitted
 
     public string Text { get; }
 }
+// [dark-factory e2e] P3-AT4 blast-radius probe
