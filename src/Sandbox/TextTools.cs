@@ -21,10 +21,12 @@ public static class TextTools
 
         var chars = text.ToCharArray();
         Array.Reverse(chars);
-        // Array.Reverse splits surrogate pairs; swap each reversed pair back together.
+        // Array.Reverse splits surrogate pairs and "\r\n" line breaks; swap each
+        // reversed pair back into order.
         for (var i = 0; i < chars.Length - 1; i++)
         {
-            if (char.IsLowSurrogate(chars[i]) && char.IsHighSurrogate(chars[i + 1]))
+            if ((char.IsLowSurrogate(chars[i]) && char.IsHighSurrogate(chars[i + 1]))
+                || (chars[i] == '\n' && chars[i + 1] == '\r'))
             {
                 (chars[i], chars[i + 1]) = (chars[i + 1], chars[i]);
                 i++;
