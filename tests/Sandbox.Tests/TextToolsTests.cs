@@ -45,6 +45,14 @@ public class TextToolsTests
         Assert.Equal("\r\n\r\n\r", TextTools.Reverse("\r\r\n\n\r"));
 
     [Fact]
+    public void Reverse_keeps_combining_mark_with_its_base_letter() =>
+        Assert.Equal("éa", TextTools.Reverse("aé"));
+
+    [Fact]
+    public void Reverse_keeps_multiple_combining_marks_with_their_base_letters() =>
+        Assert.Equal("ö́xà", TextTools.Reverse("àxö́"));
+
+    [Fact]
     public void Reverse_throws_on_null()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Reverse(null!));
