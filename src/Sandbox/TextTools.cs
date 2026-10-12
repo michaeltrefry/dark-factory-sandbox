@@ -14,25 +14,22 @@ public static class TextTools
         return text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
     }
 
-    /// <summary>Reverses the characters of <paramref name="text"/>.</summary>
+    /// <summary>
+    /// Reverses the text elements (grapheme clusters) of <paramref name="text"/>, so
+    /// surrogate pairs, combining marks and "\r\n" line breaks stay in order.
+    /// </summary>
     public static string Reverse(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        var chars = text.ToCharArray();
-        Array.Reverse(chars);
-        // Array.Reverse splits surrogate pairs and "\r\n" line breaks; swap each
-        // reversed pair back into order.
-        for (var i = 0; i < chars.Length - 1; i++)
+        var builder = new System.Text.StringBuilder(text.Length);
+        var starts = System.Globalization.StringInfo.ParseCombiningCharacters(text);
+        for (var i = starts.Length - 1; i >= 0; i--)
         {
-            if ((char.IsLowSurrogate(chars[i]) && char.IsHighSurrogate(chars[i + 1]))
-                || (chars[i] == '\n' && chars[i + 1] == '\r'))
-            {
-                (chars[i], chars[i + 1]) = (chars[i + 1], chars[i]);
-                i++;
-            }
+            var end = i + 1 < starts.Length ? starts[i + 1] : text.Length;
+            builder.Append(text, starts[i], end - starts[i]);
         }
-        return new string(chars);
+        return builder.ToString();
     }
 
     /// <summary>
