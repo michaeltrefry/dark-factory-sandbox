@@ -118,6 +118,14 @@ public class TextToolsTests
         Assert.Equal(expected, TextTools.Capitalize(text));
 
     [Fact]
+    public void Capitalize_upper_cases_supplementary_plane_first_letter() =>
+        Assert.Equal("\U00010400bc D", TextTools.Capitalize("\U00010428bc d"));
+
+    [Fact]
+    public void Capitalize_upper_cases_supplementary_plane_letter_after_whitespace() =>
+        Assert.Equal("A \U00010400", TextTools.Capitalize("a \U00010428"));
+
+    [Fact]
     public void Capitalize_throws_on_null()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Capitalize(null!));

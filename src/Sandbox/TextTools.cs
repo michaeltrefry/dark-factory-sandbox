@@ -101,7 +101,15 @@ public static class TextTools
         {
             if (!char.IsWhiteSpace(chars[i]) && (i == 0 || char.IsWhiteSpace(chars[i - 1])))
             {
-                chars[i] = char.ToUpperInvariant(chars[i]);
+                // Upper-case the whole first code point so surrogate pairs are handled.
+                if (System.Text.Rune.TryGetRuneAt(text, i, out var rune))
+                {
+                    var upper = System.Text.Rune.ToUpperInvariant(rune);
+                    if (upper.Utf16SequenceLength == rune.Utf16SequenceLength)
+                    {
+                        upper.EncodeToUtf16(chars.AsSpan(i));
+                    }
+                }
             }
         }
         return new string(chars);
