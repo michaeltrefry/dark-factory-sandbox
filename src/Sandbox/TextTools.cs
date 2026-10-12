@@ -101,7 +101,18 @@ public static class TextTools
         {
             if (!char.IsWhiteSpace(chars[i]) && (i == 0 || char.IsWhiteSpace(chars[i - 1])))
             {
-                chars[i] = char.ToUpperInvariant(chars[i]);
+                // A word may start with a surrogate pair; upper-case the whole code point.
+                if (char.IsHighSurrogate(chars[i])
+                    && System.Text.Rune.TryGetRuneAt(text, i, out var rune)
+                    && System.Text.Rune.ToUpperInvariant(rune) is { Utf16SequenceLength: 2 } upper)
+                {
+                    upper.EncodeToUtf16(chars.AsSpan(i));
+                    i++;
+                }
+                else
+                {
+                    chars[i] = char.ToUpperInvariant(chars[i]);
+                }
             }
         }
         return new string(chars);
