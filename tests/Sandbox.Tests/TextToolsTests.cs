@@ -33,6 +33,18 @@ public class TextToolsTests
         Assert.Equal("\U0001F600", TextTools.Reverse("\U0001F600"));
 
     [Fact]
+    public void Reverse_keeps_crlf_in_order() =>
+        Assert.Equal("b\r\na", TextTools.Reverse("a\r\nb"));
+
+    [Fact]
+    public void Reverse_keeps_trailing_crlf_in_order() =>
+        Assert.Equal("\r\nb\r\na", TextTools.Reverse("a\r\nb\r\n"));
+
+    [Fact]
+    public void Reverse_keeps_crlf_next_to_lone_cr_and_lf_in_order() =>
+        Assert.Equal("\r\n\r\n\r", TextTools.Reverse("\r\r\n\n\r"));
+
+    [Fact]
     public void Reverse_throws_on_null()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Reverse(null!));
