@@ -5,6 +5,8 @@ public sealed class TextSubmitted
     public TextSubmitted(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
+        if (string.IsNullOrWhiteSpace(text))
+            throw new ArgumentException("Text cannot be empty or whitespace.", nameof(text));
         Text = text;
     }
 
