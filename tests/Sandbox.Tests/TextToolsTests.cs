@@ -26,6 +26,22 @@ public class TextToolsTests
         Assert.Equal(0, TextTools.WordCount("​"));
 
     [Fact]
+    public void WordCount_ignores_punctuation_only_tokens_between_words() =>
+        Assert.Equal(3, TextTools.WordCount("a - b ... c"));
+
+    [Fact]
+    public void WordCount_punctuation_only_tokens_have_no_words()
+    {
+        Assert.Equal(0, TextTools.WordCount("-"));
+        Assert.Equal(0, TextTools.WordCount("--"));
+        Assert.Equal(0, TextTools.WordCount("..."));
+    }
+
+    [Fact]
+    public void WordCount_counts_tokens_with_letters_or_digits_despite_punctuation() =>
+        Assert.Equal(4, TextTools.WordCount("don't x-ray (123) \U00010428 --"));
+
+    [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
     [Fact]

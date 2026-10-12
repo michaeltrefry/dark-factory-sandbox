@@ -13,7 +13,8 @@ public static class TextTools
             return 0;
         }
         // U+200B is not char.IsWhiteSpace, so treat it as a space explicitly.
-        return text.Replace('​', ' ').Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
+        return text.Replace('​', ' ').Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)
+            .Count(word => word.EnumerateRunes().Any(System.Text.Rune.IsLetterOrDigit));
     }
 
     /// <summary>
