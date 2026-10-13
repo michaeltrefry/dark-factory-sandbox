@@ -196,6 +196,28 @@ public class TextToolsTests
         Assert.Equal("text", ex.ParamName);
     }
 
+    [Fact]
+    public void CountVowels_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.CountVowels(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void CountVowels_counts_ascii_vowels_in_either_case()
+    {
+        Assert.Equal(4, TextTools.CountVowels("Queue"));
+        Assert.Equal(10, TextTools.CountVowels("AEIOUaeiou"));
+    }
+
+    [Fact]
+    public void CountVowels_is_zero_for_empty_and_vowelless_text()
+    {
+        Assert.Equal(0, TextTools.CountVowels(""));
+        Assert.Equal(0, TextTools.CountVowels("xyz"));
+        Assert.Equal(0, TextTools.CountVowels("y 123 é\t\r\n"));
+    }
+
     [Theory]
     [InlineData("Hello", "he", true)]
     [InlineData("Hello", "HELLO", true)]

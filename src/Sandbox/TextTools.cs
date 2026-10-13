@@ -111,6 +111,22 @@ public static class TextTools
         return count;
     }
 
+    /// <summary>Counts ASCII vowels in either case in <paramref name="text"/>.</summary>
+    public static int CountVowels(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        var count = 0;
+        foreach (var ch in text)
+        {
+            if (ch is 'a' or 'e' or 'i' or 'o' or 'u' or 'A' or 'E' or 'I' or 'O' or 'U')
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
     /// <summary>
     /// Whether <paramref name="text"/> starts with <paramref name="prefix"/> under
     /// ordinal case-insensitive comparison.
