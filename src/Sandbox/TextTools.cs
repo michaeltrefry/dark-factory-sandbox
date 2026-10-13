@@ -3,7 +3,8 @@ namespace Sandbox;
 public static class TextTools
 {
     /// <summary>
-    /// Counts words separated by runs of whitespace or ZERO WIDTH SPACE (U+200B);
+    /// Counts words separated by runs of whitespace, ZERO WIDTH SPACE (U+200B) or
+    /// ZERO WIDTH NO-BREAK SPACE / BYTE ORDER MARK (U+FEFF);
     /// text made only of separators has no words.
     /// </summary>
     public static int WordCount(string text)
@@ -12,8 +13,8 @@ public static class TextTools
         {
             return 0;
         }
-        // U+200B is not char.IsWhiteSpace, so treat it as a space explicitly.
-        return text.Replace('​', ' ').Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
+        // U+200B and U+FEFF are not char.IsWhiteSpace, so treat them as spaces explicitly.
+        return text.Replace('﻿', ' ').Replace('​', ' ').Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
     }
 
     /// <summary>
