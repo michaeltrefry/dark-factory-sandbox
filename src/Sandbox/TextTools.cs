@@ -137,4 +137,29 @@ public static class TextTools
         }
         return true;
     }
+
+    /// <summary>
+    /// Returns the first word of <paramref name="text"/>, unchanged, where words are separated by
+    /// whitespace or ZERO WIDTH SPACE (U+200B); blank text has no first word and yields "".
+    /// </summary>
+    public static string FirstWord(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        if (IsBlank(text))
+        {
+            return string.Empty;
+        }
+        var start = 0;
+        while (char.IsWhiteSpace(text[start]) || text[start] == '​')
+        {
+            start++;
+        }
+        var end = start;
+        while (end < text.Length && !char.IsWhiteSpace(text[end]) && text[end] != '​')
+        {
+            end++;
+        }
+        return text[start..end];
+    }
 }
