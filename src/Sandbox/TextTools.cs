@@ -162,4 +162,21 @@ public static class TextTools
         }
         return text[start..end];
     }
+
+    /// <summary>
+    /// Summarizes <paramref name="text"/> as its first word plus " (+N more)" for the remaining
+    /// words; blank text yields "(blank)".
+    /// </summary>
+    public static string Headline(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        if (IsBlank(text))
+        {
+            return "(blank)";
+        }
+        var first = FirstWord(text);
+        var count = WordCount(text);
+        return count > 1 ? $"{first} (+{count - 1} more)" : first;
+    }
 }
