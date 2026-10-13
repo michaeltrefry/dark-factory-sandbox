@@ -83,6 +83,35 @@ public class TextToolsTests
     }
 
     [Fact]
+    public void Ends_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Ends(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void Ends_is_empty_for_empty_and_separator_only_text()
+    {
+        Assert.Equal("", TextTools.Ends(""));
+        Assert.Equal("", TextTools.Ends(" \t\r\n​﻿"));
+    }
+
+    [Fact]
+    public void Ends_returns_single_word_unchanged()
+    {
+        Assert.Equal("HeLLo", TextTools.Ends("HeLLo"));
+        Assert.Equal("HeLLo", TextTools.Ends("﻿\tHeLLo​﻿ "));
+    }
+
+    [Fact]
+    public void Ends_returns_first_and_last_words()
+    {
+        Assert.Equal("one ... two", TextTools.Ends("one two"));
+        Assert.Equal("one ... three", TextTools.Ends("one two three"));
+        Assert.Equal("One ... f4", TextTools.Ends("﻿\tOne​two\nTHREE﻿f4 \r\n​﻿"));
+    }
+
+    [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
     [Fact]
