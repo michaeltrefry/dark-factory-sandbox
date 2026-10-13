@@ -207,4 +207,30 @@ public class TextToolsTests
         Assert.False(TextTools.IsBlank(" ​a "));
         Assert.False(TextTools.IsBlank("﻿"));
     }
+
+    [Fact]
+    public void FirstWord_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.FirstWord(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void FirstWord_is_empty_for_blank_text()
+    {
+        Assert.Equal("", TextTools.FirstWord(""));
+        Assert.Equal("", TextTools.FirstWord(" \t\r\n"));
+        Assert.Equal("", TextTools.FirstWord("​​"));
+        Assert.Equal("", TextTools.FirstWord(" ​\t​"));
+    }
+
+    [Fact]
+    public void FirstWord_returns_first_word_unchanged()
+    {
+        Assert.Equal("hello", TextTools.FirstWord(" hello world"));
+        Assert.Equal("HeLLo", TextTools.FirstWord("HeLLo"));
+        Assert.Equal("one", TextTools.FirstWord("\t\n​one\ttwo"));
+        Assert.Equal("one", TextTools.FirstWord("one\ntwo"));
+        Assert.Equal("one", TextTools.FirstWord("one​two"));
+    }
 }
