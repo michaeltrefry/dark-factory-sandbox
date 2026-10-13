@@ -233,4 +233,39 @@ public class TextToolsTests
         Assert.Equal("one", TextTools.FirstWord("one\ntwo"));
         Assert.Equal("one", TextTools.FirstWord("one​two"));
     }
+
+    [Fact]
+    public void Headline_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Headline(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void Headline_is_blank_marker_for_blank_text()
+    {
+        Assert.Equal("(blank)", TextTools.Headline(""));
+        Assert.Equal("(blank)", TextTools.Headline(" \t\r\n"));
+        Assert.Equal("(blank)", TextTools.Headline("​​"));
+        Assert.Equal("(blank)", TextTools.Headline(" ​\t​"));
+    }
+
+    [Fact]
+    public void Headline_returns_single_word_unchanged()
+    {
+        Assert.Equal("hello", TextTools.Headline("hello"));
+        Assert.Equal("hello", TextTools.Headline("  hello\t"));
+        Assert.Equal("hello", TextTools.Headline("​hello​"));
+    }
+
+    [Fact]
+    public void Headline_counts_remaining_words()
+    {
+        Assert.Equal("one (+2 more)", TextTools.Headline("one two three"));
+        Assert.Equal("one (+1 more)", TextTools.Headline("one two"));
+    }
+
+    [Fact]
+    public void Headline_counts_words_across_mixed_separators() =>
+        Assert.Equal("one (+3 more)", TextTools.Headline(" one\ttwo​three\nfour "));
 }
