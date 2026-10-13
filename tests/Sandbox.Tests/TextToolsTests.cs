@@ -183,4 +183,28 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Capitalize(null!));
         Assert.Equal("text", ex.ParamName);
     }
+
+    [Fact]
+    public void IsBlank_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.IsBlank(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void IsBlank_is_true_for_empty_whitespace_and_zero_width_space_text()
+    {
+        Assert.True(TextTools.IsBlank(""));
+        Assert.True(TextTools.IsBlank(" \t\r\n"));
+        Assert.True(TextTools.IsBlank("​​"));
+        Assert.True(TextTools.IsBlank(" ​\t​"));
+    }
+
+    [Fact]
+    public void IsBlank_is_false_for_text_with_other_characters()
+    {
+        Assert.False(TextTools.IsBlank("hello"));
+        Assert.False(TextTools.IsBlank(" ​a "));
+        Assert.False(TextTools.IsBlank("﻿"));
+    }
 }

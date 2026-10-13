@@ -119,4 +119,22 @@ public static class TextTools
         }
         return new string(chars);
     }
+
+    /// <summary>
+    /// Whether <paramref name="text"/> is made only of whitespace and ZERO WIDTH SPACE (U+200B);
+    /// empty text is blank.
+    /// </summary>
+    public static bool IsBlank(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        foreach (var ch in text)
+        {
+            if (!char.IsWhiteSpace(ch) && ch != '​')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
