@@ -29,6 +29,15 @@ public static class TextTools
     }
 
     /// <summary>
+    /// Returns the last word using <see cref="Words"/>; text with no words yields "".
+    /// </summary>
+    public static string LastWord(string text)
+    {
+        var words = Words(text);
+        return words.Length == 0 ? string.Empty : words[^1];
+    }
+
+    /// <summary>
     /// Reverses the text elements (grapheme clusters) of <paramref name="text"/>, so
     /// surrogate pairs, combining marks and "\r\n" line breaks stay in order.
     /// </summary>
