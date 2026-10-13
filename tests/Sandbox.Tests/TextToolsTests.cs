@@ -89,6 +89,14 @@ public class TextToolsTests
         Assert.Equal(2, TextTools.CountLines("a" + (char)0x2029 + "b" + (char)0x2029));
 
     [Fact]
+    public void CountLines_ends_a_line_at_next_line() =>
+        Assert.Equal(2, TextTools.CountLines("a\u0085b"));
+
+    [Fact]
+    public void CountLines_counts_two_lines_ended_by_next_line() =>
+        Assert.Equal(2, TextTools.CountLines("a\u0085b\u0085"));
+
+    [Fact]
     public void CountLines_throws_on_null()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.CountLines(null!));
