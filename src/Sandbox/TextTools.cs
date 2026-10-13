@@ -119,4 +119,64 @@ public static class TextTools
         }
         return new string(chars);
     }
+
+    /// <summary>
+    /// Whether <paramref name="text"/> is made only of whitespace and ZERO WIDTH SPACE (U+200B);
+    /// empty text is blank.
+    /// </summary>
+    public static bool IsBlank(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        foreach (var ch in text)
+        {
+            if (!char.IsWhiteSpace(ch) && ch != '​')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Returns the first word of <paramref name="text"/>, unchanged, where words are separated by
+    /// whitespace or ZERO WIDTH SPACE (U+200B); blank text has no first word and yields "".
+    /// </summary>
+    public static string FirstWord(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        if (IsBlank(text))
+        {
+            return string.Empty;
+        }
+        var start = 0;
+        while (char.IsWhiteSpace(text[start]) || text[start] == '​')
+        {
+            start++;
+        }
+        var end = start;
+        while (end < text.Length && !char.IsWhiteSpace(text[end]) && text[end] != '​')
+        {
+            end++;
+        }
+        return text[start..end];
+    }
+
+    /// <summary>
+    /// Summarizes <paramref name="text"/> as its first word plus " (+N more)" for the remaining
+    /// words; blank text yields "(blank)".
+    /// </summary>
+    public static string Headline(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        if (IsBlank(text))
+        {
+            return "(blank)";
+        }
+        var first = FirstWord(text);
+        var count = WordCount(text);
+        return count > 1 ? $"{first} (+{count - 1} more)" : first;
+    }
 }

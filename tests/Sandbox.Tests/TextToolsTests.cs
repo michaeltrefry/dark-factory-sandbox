@@ -183,4 +183,89 @@ public class TextToolsTests
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Capitalize(null!));
         Assert.Equal("text", ex.ParamName);
     }
+
+    [Fact]
+    public void IsBlank_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.IsBlank(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void IsBlank_is_true_for_empty_whitespace_and_zero_width_space_text()
+    {
+        Assert.True(TextTools.IsBlank(""));
+        Assert.True(TextTools.IsBlank(" \t\r\n"));
+        Assert.True(TextTools.IsBlank("​​"));
+        Assert.True(TextTools.IsBlank(" ​\t​"));
+    }
+
+    [Fact]
+    public void IsBlank_is_false_for_text_with_other_characters()
+    {
+        Assert.False(TextTools.IsBlank("hello"));
+        Assert.False(TextTools.IsBlank(" ​a "));
+        Assert.False(TextTools.IsBlank("﻿"));
+    }
+
+    [Fact]
+    public void FirstWord_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.FirstWord(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void FirstWord_is_empty_for_blank_text()
+    {
+        Assert.Equal("", TextTools.FirstWord(""));
+        Assert.Equal("", TextTools.FirstWord(" \t\r\n"));
+        Assert.Equal("", TextTools.FirstWord("​​"));
+        Assert.Equal("", TextTools.FirstWord(" ​\t​"));
+    }
+
+    [Fact]
+    public void FirstWord_returns_first_word_unchanged()
+    {
+        Assert.Equal("hello", TextTools.FirstWord(" hello world"));
+        Assert.Equal("HeLLo", TextTools.FirstWord("HeLLo"));
+        Assert.Equal("one", TextTools.FirstWord("\t\n​one\ttwo"));
+        Assert.Equal("one", TextTools.FirstWord("one\ntwo"));
+        Assert.Equal("one", TextTools.FirstWord("one​two"));
+    }
+
+    [Fact]
+    public void Headline_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Headline(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void Headline_is_blank_marker_for_blank_text()
+    {
+        Assert.Equal("(blank)", TextTools.Headline(""));
+        Assert.Equal("(blank)", TextTools.Headline(" \t\r\n"));
+        Assert.Equal("(blank)", TextTools.Headline("​​"));
+        Assert.Equal("(blank)", TextTools.Headline(" ​\t​"));
+    }
+
+    [Fact]
+    public void Headline_returns_single_word_unchanged()
+    {
+        Assert.Equal("hello", TextTools.Headline("hello"));
+        Assert.Equal("hello", TextTools.Headline("  hello\t"));
+        Assert.Equal("hello", TextTools.Headline("​hello​"));
+    }
+
+    [Fact]
+    public void Headline_counts_remaining_words()
+    {
+        Assert.Equal("one (+2 more)", TextTools.Headline("one two three"));
+        Assert.Equal("one (+1 more)", TextTools.Headline("one two"));
+    }
+
+    [Fact]
+    public void Headline_counts_words_across_mixed_separators() =>
+        Assert.Equal("one (+3 more)", TextTools.Headline(" one\ttwo​three\nfour "));
 }
