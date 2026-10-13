@@ -18,6 +18,17 @@ public static class TextTools
     }
 
     /// <summary>
+    /// Splits <paramref name="text"/> into its words, in order, using the same separators as
+    /// <see cref="WordCount"/>; text made only of separators yields an empty array.
+    /// </summary>
+    public static string[] Words(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        return text.Replace('﻿', ' ').Replace('​', ' ').Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+    }
+
+    /// <summary>
     /// Reverses the text elements (grapheme clusters) of <paramref name="text"/>, so
     /// surrogate pairs, combining marks and "\r\n" line breaks stay in order.
     /// </summary>

@@ -34,6 +34,27 @@ public class TextToolsTests
         Assert.Equal(2, TextTools.WordCount("one﻿two"));
 
     [Fact]
+    public void Words_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Words(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void Words_is_empty_for_empty_and_separator_only_text()
+    {
+        Assert.Empty(TextTools.Words(""));
+        Assert.Empty(TextTools.Words(" \t\r\n​﻿"));
+    }
+
+    [Fact]
+    public void Words_splits_in_order_on_whitespace_and_zero_width_separators()
+    {
+        Assert.Equal(new[] { "a", "b" }, TextTools.Words(" a b "));
+        Assert.Equal(new[] { "One", "two", "THREE", "f4" }, TextTools.Words("\tOne​two\nTHREE﻿f4 "));
+    }
+
+    [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
     [Fact]
