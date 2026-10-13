@@ -34,6 +34,84 @@ public class TextToolsTests
         Assert.Equal(2, TextTools.WordCount("one﻿two"));
 
     [Fact]
+    public void Words_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Words(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void Words_is_empty_for_empty_and_separator_only_text()
+    {
+        Assert.Empty(TextTools.Words(""));
+        Assert.Empty(TextTools.Words(" \t\r\n​﻿"));
+    }
+
+    [Fact]
+    public void Words_splits_in_order_on_whitespace_and_zero_width_separators()
+    {
+        Assert.Equal(new[] { "a", "b" }, TextTools.Words(" a b "));
+        Assert.Equal(new[] { "One", "two", "THREE", "f4" }, TextTools.Words("\tOne​two\nTHREE﻿f4 "));
+    }
+
+    [Fact]
+    public void LastWord_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.LastWord(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void LastWord_is_empty_for_empty_and_separator_only_text()
+    {
+        Assert.Equal("", TextTools.LastWord(""));
+        Assert.Equal("", TextTools.LastWord(" \t\r\n​﻿"));
+    }
+
+    [Fact]
+    public void LastWord_returns_single_word_unchanged()
+    {
+        Assert.Equal("HeLLo", TextTools.LastWord("HeLLo"));
+        Assert.Equal("HeLLo", TextTools.LastWord("﻿\tHeLLo​﻿ "));
+    }
+
+    [Fact]
+    public void LastWord_returns_last_word_across_mixed_separators()
+    {
+        Assert.Equal("world", TextTools.LastWord("hello big world "));
+        Assert.Equal("f4", TextTools.LastWord("\tOne​two\nTHREE﻿f4 \r\n​﻿"));
+    }
+
+    [Fact]
+    public void Ends_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Ends(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void Ends_is_empty_for_empty_and_separator_only_text()
+    {
+        Assert.Equal("", TextTools.Ends(""));
+        Assert.Equal("", TextTools.Ends(" \t\r\n​﻿"));
+    }
+
+    [Fact]
+    public void Ends_returns_single_word_unchanged()
+    {
+        Assert.Equal("HeLLo", TextTools.Ends("HeLLo"));
+        Assert.Equal("HeLLo", TextTools.Ends("﻿\tHeLLo​﻿ "));
+    }
+
+    [Fact]
+    public void Ends_returns_first_and_last_words()
+    {
+        Assert.Equal("one ... two", TextTools.Ends("one two"));
+        Assert.Equal("one ... three", TextTools.Ends("one two three"));
+        Assert.Equal("One ... f4", TextTools.Ends("﻿\tOne​two\nTHREE﻿f4 \r\n​﻿"));
+    }
+
+    [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
     [Fact]
