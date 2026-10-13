@@ -209,4 +209,22 @@ public static class TextTools
         var count = WordCount(text);
         return count > 1 ? $"{first} (+{count - 1} more)" : first;
     }
+
+    /// <summary>
+    /// Whether <paramref name="text"/> reads the same backwards, comparing UTF-16 chars ordinally
+    /// with no normalization or case folding; empty text is a palindrome.
+    /// </summary>
+    public static bool IsPalindrome(string text)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+
+        for (int i = 0, j = text.Length - 1; i < j; i++, j--)
+        {
+            if (text[i] != text[j])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
