@@ -346,4 +346,33 @@ public class TextToolsTests
     [Fact]
     public void Headline_counts_words_across_mixed_separators() =>
         Assert.Equal("one (+3 more)", TextTools.Headline(" one\ttwo​three\nfour "));
+
+    [Fact]
+    public void IsPalindrome_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.IsPalindrome(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void IsPalindrome_is_true_for_symmetric_text()
+    {
+        Assert.True(TextTools.IsPalindrome(""));
+        Assert.True(TextTools.IsPalindrome("x"));
+        Assert.True(TextTools.IsPalindrome("racecar"));
+        Assert.True(TextTools.IsPalindrome("abba"));
+    }
+
+    [Fact]
+    public void IsPalindrome_is_false_for_asymmetric_chars_case_whitespace_and_punctuation()
+    {
+        Assert.False(TextTools.IsPalindrome("abca"));
+        Assert.False(TextTools.IsPalindrome("Aa"));
+        Assert.False(TextTools.IsPalindrome("aba "));
+        Assert.False(TextTools.IsPalindrome("aba!"));
+    }
+
+    [Fact]
+    public void IsPalindrome_compares_surrogate_pair_chars_ordinally() =>
+        Assert.False(TextTools.IsPalindrome("\U0001F600"));
 }
