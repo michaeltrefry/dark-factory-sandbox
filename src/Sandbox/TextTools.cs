@@ -38,6 +38,16 @@ public static class TextTools
     }
 
     /// <summary>
+    /// Returns the sole word or the first and last words separated by " ... "; no words yields "".
+    /// </summary>
+    public static string Ends(string text)
+    {
+        var words = Words(text);
+        return words.Length == 0 ? string.Empty
+            : words.Length == 1 ? words[0] : words[0] + " ... " + LastWord(text);
+    }
+
+    /// <summary>
     /// Reverses the text elements (grapheme clusters) of <paramref name="text"/>, so
     /// surrogate pairs, combining marks and "\r\n" line breaks stay in order.
     /// </summary>
