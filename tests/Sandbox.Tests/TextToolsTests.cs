@@ -26,6 +26,14 @@ public class TextToolsTests
         Assert.Equal(0, TextTools.WordCount("​"));
 
     [Fact]
+    public void WordCount_a_lone_byte_order_mark_is_no_word() =>
+        Assert.Equal(0, TextTools.WordCount("﻿"));
+
+    [Fact]
+    public void WordCount_splits_words_at_a_byte_order_mark() =>
+        Assert.Equal(2, TextTools.WordCount("one﻿two"));
+
+    [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
     [Fact]
