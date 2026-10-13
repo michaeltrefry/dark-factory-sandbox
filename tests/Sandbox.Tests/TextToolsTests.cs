@@ -55,6 +55,34 @@ public class TextToolsTests
     }
 
     [Fact]
+    public void LastWord_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextTools.LastWord(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void LastWord_is_empty_for_empty_and_separator_only_text()
+    {
+        Assert.Equal("", TextTools.LastWord(""));
+        Assert.Equal("", TextTools.LastWord(" \t\r\n​﻿"));
+    }
+
+    [Fact]
+    public void LastWord_returns_single_word_unchanged()
+    {
+        Assert.Equal("HeLLo", TextTools.LastWord("HeLLo"));
+        Assert.Equal("HeLLo", TextTools.LastWord("﻿\tHeLLo​﻿ "));
+    }
+
+    [Fact]
+    public void LastWord_returns_last_word_across_mixed_separators()
+    {
+        Assert.Equal("world", TextTools.LastWord("hello big world "));
+        Assert.Equal("f4", TextTools.LastWord("\tOne​two\nTHREE﻿f4 \r\n​﻿"));
+    }
+
+    [Fact]
     public void Reverse_reverses() => Assert.Equal("cba", TextTools.Reverse("abc"));
 
     [Fact]
