@@ -374,6 +374,14 @@ public class TextToolsTests
     }
 
     [Fact]
+    public void Headline_is_blank_marker_for_byte_order_mark_only_text()
+    {
+        Assert.Equal("(blank)", TextTools.Headline("\U0000FEFF"));
+        Assert.Equal("(blank)", TextTools.Headline(" \U0000FEFF\t"));
+        Assert.Equal("one (+1 more)", TextTools.Headline("one\U0000FEFFtwo"));
+    }
+
+    [Fact]
     public void Headline_returns_single_word_unchanged()
     {
         Assert.Equal("hello", TextTools.Headline("hello"));
