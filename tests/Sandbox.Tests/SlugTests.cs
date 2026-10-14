@@ -106,4 +106,52 @@ public class SlugTests
     [InlineData("_.,")]
     public void From_returns_empty_when_nothing_survives(string text) =>
         Assert.Equal("", Slug.From(text));
+
+    [Fact]
+    public void Unique_throws_on_null_text()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => Slug.Unique(null!, []));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void Unique_throws_on_null_taken()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => Slug.Unique("a", null!));
+        Assert.Equal("taken", ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("!!!")]
+    [InlineData("---")]
+    public void Unique_throws_when_slug_is_empty(string text)
+    {
+        var ex = Assert.Throws<ArgumentException>(() => Slug.Unique(text, []));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Fact]
+    public void Unique_returns_base_slug_when_taken_is_empty() =>
+        Assert.Equal("hello-world", Slug.Unique("Hello World", []));
+
+    [Fact]
+    public void Unique_returns_base_slug_when_unused_and_leaves_taken_unchanged()
+    {
+        var taken = new List<string> { "other", "hello-world-2" };
+        Assert.Equal("hello-world", Slug.Unique("Hello World", taken));
+        Assert.Equal(["other", "hello-world-2"], taken);
+    }
+
+    [Fact]
+    public void Unique_appends_next_numeric_suffix_and_leaves_taken_unchanged()
+    {
+        var taken = new List<string> { "hello-world", "hello-world-2" };
+        Assert.Equal("hello-world-3", Slug.Unique("Hello World", taken));
+        Assert.Equal(["hello-world", "hello-world-2"], taken);
+    }
+
+    [Fact]
+    public void Unique_uses_first_available_suffix_starting_at_two() =>
+        Assert.Equal("hello-world-2", Slug.Unique("Hello World", ["hello-world", "hello-world-3"]));
 }
