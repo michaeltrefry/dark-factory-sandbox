@@ -42,4 +42,10 @@ public static class TextCase
     /// </summary>
     public static string ToSnake(string text) =>
         string.Join('_', SplitWords(text).Select(word => word.ToLowerInvariant()));
+
+    /// <summary>
+    /// Upper-cases the result of <see cref="ToSnake"/> invariantly.
+    /// </summary>
+    public static string ToScreamingSnake(string text) =>
+        ToSnake(text).ToUpperInvariant();
 }
