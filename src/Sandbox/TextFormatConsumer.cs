@@ -8,9 +8,10 @@ public sealed class TextFormatConsumer : IConsumer<TextSubmitted>
     {
         ArgumentNullException.ThrowIfNull(message);
 
-        if (TextTools.StartsWithIgnoreCase(message.Text, "rev:"))
+        var trimmed = message.Text.TrimStart();
+        if (TextTools.StartsWithIgnoreCase(trimmed, "rev:"))
         {
-            Last = TextTools.Reverse(message.Text.Substring(4));
+            Last = TextTools.Reverse(trimmed.Substring(4));
         }
         else
         {
