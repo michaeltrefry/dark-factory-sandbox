@@ -51,4 +51,40 @@ public class TextCaseTests
     [Fact]
     public void SplitWords_preserves_order_and_casing() =>
         Assert.Equal(["Foo", "BAR", "baz", "Qux"], TextCase.SplitWords("Foo BAR-baz_Qux"));
+
+    [Fact]
+    public void ToSnake_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextCase.ToSnake(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData("parseHttpRequest", "parse_http_request")]
+    [InlineData("parseHttpRequest_v2", "parse_http_request_v2")]
+    [InlineData(" max--retryCount__ ", "max_retry_count")]
+    public void ToSnake_joins_lowercased_words_with_underscore(string text, string expected) =>
+        Assert.Equal(expected, TextCase.ToSnake(text));
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("-_- _")]
+    public void ToSnake_separator_only_text_is_empty(string text) =>
+        Assert.Equal("", TextCase.ToSnake(text));
+
+    [Fact]
+    public void ToSnake_lowercases_with_invariant_culture()
+    {
+        var original = System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("tr-TR");
+            Assert.Equal("itemvalue", TextCase.ToSnake("ITEMValue"));
+        }
+        finally
+        {
+            System.Globalization.CultureInfo.CurrentCulture = original;
+        }
+    }
 }
