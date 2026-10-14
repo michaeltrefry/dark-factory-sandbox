@@ -17,6 +17,22 @@ public class TextConsumersTests
         Assert.Equal(new TextStats(3, 2, 1), consumer.Last);
     }
 
+    [Theory]
+    [InlineData("a{9}b", 2, 1, 1)]
+    [InlineData("a{A0}b c", 3, 1, 2)]
+    [InlineData("a{D}{A}b", 2, 2, 0)]
+    [InlineData("a{2028}b{2029}c", 3, 3, 0)]
+    public void TextStatsConsumer_counts_whitespace_other_than_line_terminators_as_spaces(
+        string pattern, int words, int lines, int spaces)
+    {
+        // "{hex}" stands for the UTF-16 char with that code.
+        var text = System.Text.RegularExpressions.Regex.Replace(
+            pattern, "{([0-9A-F]+)}", m => ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString());
+        var consumer = new TextStatsConsumer();
+        consumer.Consume(new TextSubmitted(text));
+        Assert.Equal(new TextStats(words, lines, spaces), consumer.Last);
+    }
+
     [Fact]
     public void TextStatsConsumer_throws_on_null_message()
     {
