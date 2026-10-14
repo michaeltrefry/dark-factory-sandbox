@@ -214,18 +214,19 @@ public static class TextTools
 
     /// <summary>
     /// Summarizes <paramref name="text"/> as its first word plus " (+N more)" for the remaining
-    /// words; blank text yields "(blank)".
+    /// words; text with no words (see <see cref="WordCount"/>), including text made only of
+    /// BYTE ORDER MARKs (U+FEFF), yields "(blank)".
     /// </summary>
     public static string Headline(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        if (IsBlank(text))
+        var count = WordCount(text);
+        if (count == 0)
         {
             return "(blank)";
         }
         var first = FirstWord(text);
-        var count = WordCount(text);
         return count > 1 ? $"{first} (+{count - 1} more)" : first;
     }
 
