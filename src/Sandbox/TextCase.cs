@@ -49,4 +49,11 @@ public static class TextCase
     /// </summary>
     public static string ToSnake(string text) =>
         string.Join('_', SplitWords(text).Select(word => word.ToLowerInvariant()));
+
+    /// <summary>
+    /// Converts <paramref name="text"/> to SCREAMING_SNAKE_CASE using <see cref="ToSnake"/>
+    /// and invariant uppercase conversion.
+    /// </summary>
+    public static string ToScreamingSnake(string text) =>
+        ToSnake(text).ToUpperInvariant();
 }

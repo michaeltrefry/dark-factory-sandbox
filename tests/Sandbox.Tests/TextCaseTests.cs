@@ -87,4 +87,40 @@ public class TextCaseTests
             System.Globalization.CultureInfo.CurrentCulture = original;
         }
     }
+
+    [Fact]
+    public void ToScreamingSnake_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextCase.ToScreamingSnake(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData("max-retryCount", "MAX_RETRY_COUNT")]
+    [InlineData("parseHttpRequest_v2", "PARSE_HTTP_REQUEST_V2")]
+    public void ToScreamingSnake_joins_uppercased_words_with_underscore(string text, string expected) =>
+        Assert.Equal(expected, TextCase.ToScreamingSnake(text));
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("\t\r\n")]
+    [InlineData("-_- _")]
+    public void ToScreamingSnake_separator_only_text_is_empty(string text) =>
+        Assert.Equal("", TextCase.ToScreamingSnake(text));
+
+    [Fact]
+    public void ToScreamingSnake_uppercases_with_invariant_culture()
+    {
+        var original = System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("tr-TR");
+            Assert.Equal("MINI_VALUE", TextCase.ToScreamingSnake("miniValue"));
+        }
+        finally
+        {
+            System.Globalization.CultureInfo.CurrentCulture = original;
+        }
+    }
 }
