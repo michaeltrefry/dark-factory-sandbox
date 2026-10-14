@@ -42,4 +42,11 @@ public static class TextCase
         }
         return words.ToArray();
     }
+
+    /// <summary>
+    /// Converts <paramref name="text"/> to snake_case: the words from <see cref="SplitWords"/>,
+    /// lowercased with the invariant culture and joined with '_'.
+    /// </summary>
+    public static string ToSnake(string text) =>
+        string.Join('_', SplitWords(text).Select(word => word.ToLowerInvariant()));
 }
