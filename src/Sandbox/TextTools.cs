@@ -229,19 +229,29 @@ public static class TextTools
     }
 
     /// <summary>
-    /// Whether <paramref name="text"/> reads the same backwards, comparing UTF-16 chars ordinally
-    /// with no normalization or case folding; empty text is a palindrome.
+    /// Whether <paramref name="text"/> reads the same backwards, comparing Unicode scalar values
+    /// (<see cref="System.Text.Rune"/>) ordinally, so surrogate pairs count as one character, with
+    /// no normalization or case folding; a lone surrogate is compared as its UTF-16 char. Empty
+    /// text is a palindrome.
     /// </summary>
     public static bool IsPalindrome(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        for (int i = 0, j = text.Length - 1; i < j; i++, j--)
+        var span = text.AsSpan();
+        int i = 0, j = text.Length;
+        while (i < j)
         {
-            if (text[i] != text[j])
+            var front = System.Text.Rune.DecodeFromUtf16(span[i..j], out var rune, out var frontLength) == System.Buffers.OperationStatus.Done
+                ? rune.Value : span[i];
+            var back = System.Text.Rune.DecodeLastFromUtf16(span[i..j], out rune, out var backLength) == System.Buffers.OperationStatus.Done
+                ? rune.Value : span[j - 1];
+            if (front != back)
             {
                 return false;
             }
+            i += frontLength;
+            j -= backLength;
         }
         return true;
     }

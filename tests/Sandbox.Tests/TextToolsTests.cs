@@ -410,6 +410,10 @@ public class TextToolsTests
     }
 
     [Fact]
-    public void IsPalindrome_compares_surrogate_pair_chars_ordinally() =>
-        Assert.False(TextTools.IsPalindrome("\U0001F600"));
+    public void IsPalindrome_compares_characters_outside_the_bmp_as_scalar_values()
+    {
+        Assert.True(TextTools.IsPalindrome("\U00010428a\U00010428"));
+        Assert.True(TextTools.IsPalindrome("\U0001F600"));
+        Assert.False(TextTools.IsPalindrome("\U00010428a\U00010429"));
+    }
 }
