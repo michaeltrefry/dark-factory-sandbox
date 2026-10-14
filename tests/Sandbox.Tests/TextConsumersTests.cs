@@ -41,6 +41,17 @@ public class TextConsumersTests
         Assert.Equal("cba", consumer.Last);
     }
 
+    [Theory]
+    [InlineData("  rev:abc", "cba")]
+    [InlineData("\tREV:xy", "yx")]
+    [InlineData("  hello", "  Hello")]
+    public void TextFormatConsumer_ignores_leading_whitespace_before_rev_prefix(string text, string expected)
+    {
+        var consumer = new TextFormatConsumer();
+        consumer.Consume(new TextSubmitted(text));
+        Assert.Equal(expected, consumer.Last);
+    }
+
     [Fact]
     public void TextFormatConsumer_throws_on_null_message()
     {
