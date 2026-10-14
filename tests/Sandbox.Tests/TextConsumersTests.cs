@@ -34,6 +34,17 @@ public class TextConsumersTests
     }
 
     [Fact]
+    public void TextStatsConsumer_does_not_count_vertical_tab_or_form_feed_as_spaces()
+    {
+        var consumer = new TextStatsConsumer();
+        consumer.Consume(new TextSubmitted("a\vb"));
+        Assert.Equal(new TextStats(2, 2, 0), consumer.Last);
+
+        consumer.Consume(new TextSubmitted("a\fb c"));
+        Assert.Equal(new TextStats(3, 2, 1), consumer.Last);
+    }
+
+    [Fact]
     public void TextStatsConsumer_throws_on_null_message()
     {
         var consumer = new TextStatsConsumer();

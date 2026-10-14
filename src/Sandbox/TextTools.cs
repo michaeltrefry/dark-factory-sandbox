@@ -93,7 +93,7 @@ public static class TextTools
         return lines;
     }
 
-    private static bool IsLineTerminator(char c) =>
+    internal static bool IsLineTerminator(char c) =>
         c is '\r' or '\n' or '\v' or '\f' or (char)0x2028 or (char)0x2029;
 
     /// <summary>Counts ordinal occurrences of <paramref name="c"/> in <paramref name="text"/>.</summary>
