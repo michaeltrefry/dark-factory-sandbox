@@ -36,4 +36,10 @@ public static class TextCase
         }
         return words.ToArray();
     }
+
+    /// <summary>
+    /// Joins the words from <see cref="SplitWords"/>, lower-cased invariantly, with underscores.
+    /// </summary>
+    public static string ToSnake(string text) =>
+        string.Join('_', SplitWords(text).Select(word => word.ToLowerInvariant()));
 }
