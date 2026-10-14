@@ -187,28 +187,28 @@ public static class TextTools
 
     /// <summary>
     /// Returns the first word of <paramref name="text"/>, unchanged, where words are separated by
-    /// whitespace or ZERO WIDTH SPACE (U+200B); blank text has no first word and yields "".
+    /// whitespace, ZERO WIDTH SPACE (U+200B) or ZERO WIDTH NO-BREAK SPACE / BYTE ORDER MARK
+    /// (U+FEFF), agreeing with <see cref="Words"/>; text with no words yields "".
     /// </summary>
     public static string FirstWord(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        if (IsBlank(text))
-        {
-            return string.Empty;
-        }
         var start = 0;
-        while (char.IsWhiteSpace(text[start]) || text[start] == '​')
+        while (start < text.Length && IsWordSeparator(text[start]))
         {
             start++;
         }
         var end = start;
-        while (end < text.Length && !char.IsWhiteSpace(text[end]) && text[end] != '​')
+        while (end < text.Length && !IsWordSeparator(text[end]))
         {
             end++;
         }
         return text[start..end];
     }
+
+    private static bool IsWordSeparator(char c) =>
+        char.IsWhiteSpace(c) || c == '​' || c == '﻿';
 
     /// <summary>
     /// Summarizes <paramref name="text"/> as its first word plus " (+N more)" for the remaining
