@@ -20,7 +20,7 @@ public sealed class TextStatsConsumer : IConsumer<TextSubmitted>
         var count = 0;
         foreach (var ch in text)
         {
-            if (char.IsWhiteSpace(ch) && ch is not ('\r' or '\n' or (char)0x2028 or (char)0x2029))
+            if (char.IsWhiteSpace(ch) && !TextTools.IsLineTerminator(ch))
             {
                 count++;
             }
