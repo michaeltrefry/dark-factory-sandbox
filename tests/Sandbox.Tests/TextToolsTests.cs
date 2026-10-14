@@ -174,6 +174,14 @@ public class TextToolsTests
     public void CountLines_ends_line_at_paragraph_separator_without_extra_trailing_line() =>
         Assert.Equal(2, TextTools.CountLines("a" + (char)0x2029 + "b" + (char)0x2029));
 
+    [Theory]
+    [InlineData("a\vb", 2)]
+    [InlineData("a\fb", 2)]
+    [InlineData("a\v", 1)]
+    [InlineData("a\f", 1)]
+    public void CountLines_ends_line_at_vertical_tab_and_form_feed_without_extra_trailing_line(string text, int expected) =>
+        Assert.Equal(expected, TextTools.CountLines(text));
+
     [Fact]
     public void CountLines_throws_on_null()
     {
