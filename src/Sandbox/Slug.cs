@@ -60,4 +60,33 @@ public static class Slug
         }
         return builder.ToString();
     }
+
+    /// <summary>
+    /// Returns <see cref="From"/>(<paramref name="text"/>) when it is not in <paramref name="taken"/>;
+    /// otherwise appends the first of -2, -3, ... that yields an unused slug. Does not modify
+    /// <paramref name="taken"/>.
+    /// </summary>
+    public static string Unique(string text, IReadOnlyCollection<string> taken)
+    {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(taken);
+
+        var slug = From(text);
+        if (slug.Length == 0)
+        {
+            throw new ArgumentException("Text produces an empty slug.", nameof(text));
+        }
+        if (!taken.Contains(slug))
+        {
+            return slug;
+        }
+        for (var suffix = 2; ; suffix++)
+        {
+            var candidate = $"{slug}-{suffix}";
+            if (!taken.Contains(candidate))
+            {
+                return candidate;
+            }
+        }
+    }
 }
