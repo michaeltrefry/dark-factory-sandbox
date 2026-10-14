@@ -30,4 +30,34 @@ public static class Slug
         }
         return builder.ToString();
     }
+
+    /// <summary>
+    /// <see cref="Normalize"/>s <paramref name="text"/>, keeps only ASCII letters, ASCII digits and
+    /// hyphens, then collapses each run of hyphens to one and trims hyphens from both ends.
+    /// </summary>
+    public static string From(string text)
+    {
+        var normalized = Normalize(text);
+        var builder = new System.Text.StringBuilder(normalized.Length);
+        var pendingHyphen = false;
+        foreach (var ch in normalized)
+        {
+            if (ch == '-')
+            {
+                pendingHyphen = builder.Length > 0;
+                continue;
+            }
+            if (!((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')))
+            {
+                continue;
+            }
+            if (pendingHyphen)
+            {
+                builder.Append('-');
+                pendingHyphen = false;
+            }
+            builder.Append(ch);
+        }
+        return builder.ToString();
+    }
 }
