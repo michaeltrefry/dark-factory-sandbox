@@ -50,6 +50,37 @@ public class TextCaseTests
         Assert.Equal(new[] { text }, TextCase.SplitWords(text));
 
     [Fact]
+    public void ToSnake_throws_on_null()
+    {
+        var ex = Assert.Throws<ArgumentNullException>(() => TextCase.ToSnake(null!));
+        Assert.Equal("text", ex.ParamName);
+    }
+
+    [Theory]
+    [InlineData("parseHttpRequest", "parse_http_request")]
+    [InlineData("parseHttpRequest_v2", "parse_http_request_v2")]
+    [InlineData(" max--retryCount__ ", "max_retry_count")]
+    [InlineData("", "")]
+    [InlineData(" \t--__ ", "")]
+    public void ToSnake_lowercases_words_joined_with_underscores(string text, string expected) =>
+        Assert.Equal(expected, TextCase.ToSnake(text));
+
+    [Fact]
+    public void ToSnake_is_culture_independent()
+    {
+        var original = System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("tr-TR");
+            Assert.Equal("title", TextCase.ToSnake("TITLE"));
+        }
+        finally
+        {
+            System.Globalization.CultureInfo.CurrentCulture = original;
+        }
+    }
+
+    [Fact]
     public void SplitWords_preserves_casing_across_mixed_separators() =>
         Assert.Equal(new[] { "One", "TWO", "three", "Four" }, TextCase.SplitWords("__One-\tTWO\nthree Four--"));
 }
