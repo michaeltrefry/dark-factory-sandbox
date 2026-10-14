@@ -141,7 +141,8 @@ public static class TextTools
 
     /// <summary>
     /// Upper-cases (invariant culture) the first character of every word separated by
-    /// whitespace or ZERO WIDTH SPACE (U+200B), leaving all other characters unchanged.
+    /// whitespace, ZERO WIDTH SPACE (U+200B) or ZERO WIDTH NO-BREAK SPACE / BYTE ORDER MARK
+    /// (U+FEFF), leaving all other characters unchanged.
     /// </summary>
     public static string Capitalize(string text)
     {
@@ -150,7 +151,7 @@ public static class TextTools
         var chars = text.ToCharArray();
         for (var i = 0; i < chars.Length; i++)
         {
-            if (!char.IsWhiteSpace(chars[i]) && (i == 0 || char.IsWhiteSpace(chars[i - 1]) || chars[i - 1] == '​'))
+            if (!char.IsWhiteSpace(chars[i]) && (i == 0 || char.IsWhiteSpace(chars[i - 1]) || chars[i - 1] == '​' || chars[i - 1] == '﻿'))
             {
                 // Upper-case the whole first code point so surrogate pairs are handled.
                 if (System.Text.Rune.TryGetRuneAt(text, i, out var rune))
