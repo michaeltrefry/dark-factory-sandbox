@@ -341,6 +341,15 @@ public class TextToolsTests
     }
 
     [Fact]
+    public void FirstWord_treats_byte_order_marks_as_separators()
+    {
+        Assert.Equal("one", TextTools.FirstWord("one﻿two"));
+        Assert.Equal("one", TextTools.FirstWord("﻿one"));
+        Assert.Equal("", TextTools.FirstWord("﻿"));
+        Assert.Equal("one (+1 more)", TextTools.Headline("one﻿two"));
+    }
+
+    [Fact]
     public void Headline_throws_on_null()
     {
         var ex = Assert.Throws<ArgumentNullException>(() => TextTools.Headline(null!));
