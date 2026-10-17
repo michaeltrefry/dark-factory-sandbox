@@ -2,7 +2,24 @@ namespace Sandbox;
 
 public static class HotFileCount
 {
-    public static int Words(string text) => text.Split(' ').Length;
+    public static int Words(string text)
+    {
+        int count = 0;
+        bool inWord = false;
+        foreach (char c in text)
+        {
+            if (char.IsWhiteSpace(c))
+            {
+                inWord = false;
+            }
+            else if (!inWord)
+            {
+                inWord = true;
+                count++;
+            }
+        }
+        return count;
+    }
 
     /// <summary>
     /// Returns the number of '\n'-separated lines in <paramref name="text"/>; a non-empty string has
